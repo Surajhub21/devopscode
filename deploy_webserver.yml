@@ -1,13 +1,20 @@
 ---
-- name: Upload new code and ReStart the service
+- name: Upload new code and restart Apache on Ubuntu targets
   hosts: jenkins
   vars:
-    app: httpd
-    src_path: /var/lib/jenkins/workspace/webserver-update/index.html
+    app: apache2
+    src_path: /var/jenkins_home/workspace/deploy_html_into_apachewebserver/index.html
     dest_path: /var/www/html/index.html
 
   become: true
+
   tasks:
+    - name: Ensure apache package is installed (Ubuntu/Debian)
+      apt:
+        name: "{{ app }}"
+        state: present
+        update_cache: yes
+
     - name: Place custom HTML file
       copy:
         src: "{{ src_path }}"
@@ -15,7 +22,14 @@
         owner: www-data
         group: www-data
         mode: '0644'
+      notify: Restart apache
 
+  handlers:
+    - name: Restart apache
+      service:
+        name: "{{ app }}"
+        state: restarted
+        enabled: yes
     - name: Restart and enable the service
       service:
         name: "{{ app }}"
