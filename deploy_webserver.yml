@@ -1,0 +1,23 @@
+---
+- name: Upload new code and ReStart the service
+  hosts: jenkins
+  vars:
+    app: httpd
+    src_path: /var/lib/jenkins/workspace/webserver-update/index.html
+    dest_path: /var/www/html/index.html
+
+  become: true
+  tasks:
+    - name: Place custom HTML file
+      copy:
+        src: "{{ src_path }}"
+        dest: "{{ dest_path }}"
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
+    - name: Restart and enable the service
+      service:
+        name: "{{ app }}"
+        state: restarted
+        enabled: yes
