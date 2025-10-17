@@ -1,6 +1,6 @@
 ---
 - name: Upload new code and restart Apache on Ubuntu targets
-  hosts: jenkins
+  hosts: server1
   vars:
     app: apache2
     src_path: /var/jenkins_home/workspace/deploy_html_into_apachewebserver/index.html
