@@ -1,0 +1,14 @@
+---
+- name: Check Ubuntu container network via ping
+  hosts: server1        # replace with your inventory host name or IP
+  gather_facts: no
+
+  tasks:
+    - name: Ping localhost inside the container
+      command: ping -c 3 127.0.0.1
+      register: ping_result
+      ignore_errors: yes
+
+    - name: Display ping result
+      debug:
+        msg: "{{ ping_result.stdout }}"
