@@ -1,0 +1,21 @@
+---
+- name: Firewall changes
+  hosts: all
+  become: true
+
+  tasks:
+  - name: Enable a service in firewalldd
+    firewalld:
+      port: 80/tcp
+      permanent: true
+      state: disabled
+    notify: 
+      - Reload firewalld
+
+  handlers:
+  - name: Reload firewalld
+    service:
+      name: firewalld
+      state: reloaded
+
+
