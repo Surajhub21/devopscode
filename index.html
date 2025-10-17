@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Welcome — Beautiful Apache Page</title>
+
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1: #0f172a;
+      --bg2: #0b3a52;
+      --card: rgba(255,255,255,0.06);
+      --accent: #7dd3fc;
+      --accent-2: #60a5fa;
+      --glass: rgba(255,255,255,0.04);
+      --muted: rgba(255,255,255,0.65);
+      --radius: 14px;
+      color-scheme: dark;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(96,165,250,0.07), transparent 15%),
+                  radial-gradient(900px 500px at 90% 90%, rgba(125,211,252,0.05), transparent 10%),
+                  linear-gradient(180deg,var(--bg1),var(--bg2) 60%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      color: #e6eef8;
+      line-height:1.4;
+    }
+
+    .wrap{
+      max-width:1100px;
+      margin:36px auto;
+      padding:28px;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:28px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      text-decoration:none;
+      color:inherit;
+    }
+    .logo {
+      width:56px;
+      height:56px;
+      border-radius:12px;
+      background: linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:grid;
+      place-items:center;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.45), inset 0 -6px 18px rgba(255,255,255,0.03);
+      font-weight:800;
+      color:#07203a;
+      font-size:20px;
+    }
+    .brand h1{
+      margin:0;
+      font-size:18px;
+      font-weight:700;
+      letter-spacing:-0.2px;
+    }
+    .brand p{ margin:0; font-size:12px; color:var(--muted); }
+
+    nav a{
+      color:var(--muted);
+      text-decoration:none;
+      margin-left:18px;
+      font-weight:600;
+      font-size:13px;
+    }
+
+    .hero{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border-radius:var(--radius);
+      padding:34px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:center;
+      box-shadow: 0 8px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+
+    .hero-left h2{
+      margin:0 0 10px 0;
+      font-size:34px;
+      line-height:1.05;
+      letter-spacing:-0.5px;
+    }
+    .tag{
+      display:inline-block;
+      background: linear-gradient(90deg, rgba(125,211,252,0.12), rgba(96,165,250,0.08));
+      color: var(--accent);
+      padding:6px 12px;
+      border-radius:999px;
+      font-weight:700;
+      font-size:12px;
+      margin-bottom:14px;
+      box-shadow: 0 4px 18px rgba(96,165,250,0.06);
+    }
+    .hero p{ margin:0 0 18px 0; color:var(--muted); font-size:15px; }
+
+    .cta-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .btn{
+      border:0;
+      padding:12px 16px;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
+      font-size:14px;
+      background: linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#052033;
+      box-shadow: 0 10px 30px rgba(96,165,250,0.12);
+    }
+    .btn.ghost{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow:none;
+      font-weight:600;
+    }
+
+    .hero-right{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:18px;
+      border-radius:12px;
+      min-height:180px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      justify-content:center;
+    }
+    .stats{
+      display:flex;
+      gap:10px;
+      justify-content:space-between;
+    }
+    .stat{
+      flex:1;
+      background:var(--glass);
+      padding:10px;
+      border-radius:10px;
+      text-align:center;
+      font-weight:700;
+    }
+    .stat small{ display:block; font-weight:500; color:var(--muted); font-size:12px; margin-top:6px; }
+
+    section.features{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+      margin-top:20px;
+    }
+    .feature{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border-radius:12px;
+      padding:18px;
+      box-shadow: 0 6px 20px rgba(2,6,23,0.45);
+    }
+    .feature h3{ margin:0 0 8px 0; font-size:16px; }
+    .feature p{ margin:0; color:var(--muted); font-size:13px; }
+
+    footer{
+      margin-top:28px;
+      padding:18px;
+      background:transparent;
+      border-radius:10px;
+      color:var(--muted);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      font-size:13px;
+    }
+
+    /* responsive */
+    @media (max-width:980px){
+      .hero{ grid-template-columns: 1fr; padding:20px; }
+      section.features{ grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:640px){
+      .wrap{ padding:16px; margin:12px; }
+      .logo{ width:48px; height:48px; font-size:18px; }
+      section.features{ grid-template-columns:1fr; }
+      header{ flex-direction:column; align-items:flex-start; gap:10px; }
+    }
+
+    /* subtle animated background shapes */
+    .bg-shape{
+      position:fixed;
+      right:-10%;
+      top:-10%;
+      width:420px;
+      height:420px;
+      filter: blur(40px);
+      opacity:0.12;
+      background: linear-gradient(120deg,#60a5fa,#7dd3fc);
+      transform: rotate(25deg);
+      z-index:0;
+      pointer-events:none;
+      border-radius:40%;
+    }
+    .bg-shape2{
+      left:-18%;
+      bottom:-18%;
+      width:360px;
+      height:360px;
+      filter: blur(60px);
+      opacity:0.08;
+      background: linear-gradient(120deg,#60a5fa33,#7dd3fc44);
+      border-radius:40%;
+      z-index:0;
+      pointer-events:none;
+    }
+
+    /* small form style */
+    .newsletter{
+      margin-top:14px;
+      display:flex;
+      gap:8px;
+    }
+    .newsletter input{
+      flex:1;
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.03);
+      background:transparent;
+      color:inherit;
+      outline:none;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-shape" aria-hidden="true"></div>
+  <div class="bg-shape2" aria-hidden="true"></div>
+
+  <div class="wrap" role="main">
+    <header>
+      <a class="brand" href="#">
+        <div class="logo">AP</div>
+        <div>
+          <h1>Apache Preview</h1>
+          <p>Suraj Mondal's one page html view</p>
+        </div>
+      </a>
+
+      <nav aria-label="Main">
+        <a href="#features">Features</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-left">
+          <span class="tag">Fast • Simple • Beautiful</span>
+          <h2 id="hero-title">A beautiful single-page site — served from your Ubuntu + Apache container</h2>
+          <p>Lightweight, responsive, and ready to be served on port 80. Edit the HTML directly or mount a volume to iterate quickly.</p>
+
+          <div class="cta-row">
+            <button class="btn" onclick="scrollToSection('features')">Explore features</button>
+            <button class="btn ghost" onclick="scrollToSection('contact')">Get in touch</button>
+          </div>
+
+          <div class="newsletter" style="margin-top:18px;">
+            <input aria-label="Email" type="email" placeholder="Your email (demo only)" />
+            <button class="btn" onclick="alert('This is a demo page. No signup will occur.')">Join</button>
+          </div>
+        </div>
+
+        <aside class="hero-right" aria-labelledby="stats-label">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <strong style="font-size:20px;">Ready to serve</strong>
+              <div style="color:var(--muted); font-size:13px; margin-top:6px;">Place this file at /var/www/html/index.html</div>
+            </div>
+            <div style="text-align:right; font-weight:800; color:var(--accent);">Port 80</div>
+          </div>
+
+          <div class="stats" aria-hidden="true">
+            <div class="stat">
+              99ms
+              <small>Avg load</small>
+            </div>
+            <div class="stat">
+              1.2MB
+              <small>Page size</small>
+            </div>
+            <div class="stat">
+              100%
+              <small>Responsive</small>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="features" class="features" aria-label="Features">
+        <div class="feature">
+          <h3>Modern Design</h3>
+          <p>Gradient accents, subtle glass panels and a clean layout that looks great on phones and desktops.</p>
+        </div>
+        <div class="feature">
+          <h3>Single File</h3>
+          <p>Everything you need is in this single HTML file — CSS &amp; JS included inline for simple deployment.</p>
+        </div>
+        <div class="feature">
+          <h3>Easy to Serve</h3>
+          <p>Copy to /var/www/html/index.html in your container or mount a host folder to the web root to edit live.</p>
+        </div>
+      </section>
+
+      <section id="gallery" style="margin-top:22px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div style="background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding:18px; border-radius:12px;">
+            <h3 style="margin-top:0;">Clean typography</h3>
+            <p style="color:var(--muted); margin-bottom:6px;">Inter font provides a crisp, modern look for headings and body text.</p>
+            <div style="height:120px; border-radius:10px; background:linear-gradient(90deg,#7dd3fc22,#60a5fa22); display:grid; place-items:center; color:var(--accent); font-weight:700;">Hero Sample</div>
+          </div>
+
+          <div style="background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding:18px; border-radius:12px;">
+            <h3 style="margin-top:0;">Responsive layout</h3>
+            <p style="color:var(--muted); margin-bottom:6px;">Grid-based sections adapt to screen size — try resizing the browser to see how content flows.</p>
+            <div style="height:120px; border-radius:10px; background:linear-gradient(90deg,#60a5fa22,#7dd3fc22); display:grid; place-items:center; color:var(--accent-2); font-weight:700;">Adaptive</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" style="margin-top:22px;">
+        <div style="background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding:18px; border-radius:12px;">
+          <h3 style="margin-top:0;">Contact</h3>
+          <p style="color:var(--muted);">This is a demo page — update the HTML with your content. To enable HTTPS or add server-side features, configure Apache or use a reverse proxy.</p>
+
+          <div style="display:flex; gap:8px; margin-top:12px;">
+            <input placeholder="Your name" style="flex:1; padding:10px; border-radius:8px; background:transparent; color:inherit; border:1px solid rgba(255,255,255,0.03)" />
+            <input placeholder="Your message" style="flex:1; padding:10px; border-radius:8px; background:transparent; color:inherit; border:1px solid rgba(255,255,255,0.03)" />
+            <button class="btn" onclick="alert('Thanks — this is just a demo page')">Send</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>Made for container demos • Apache + Ubuntu</div>
+      <div>&copy; <span id="year"></span> Your Site</div>
+    </footer>
+  </div>
+
+  <script>
+    // small UX helpers
+    document.getElementById('year').textContent = new Date().getFullYear();
+    function scrollToSection(id){
+      const el = document.getElementById(id);
+      if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  </script>
+</body>
+</html>
