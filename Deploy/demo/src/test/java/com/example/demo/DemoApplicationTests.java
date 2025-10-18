@@ -14,10 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class DemoApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -55,6 +51,11 @@ class DemoApplicationTests {
                                                           </body>
                                                           </html>
                                                           """));
+    }
+
+
+    @Test
+    void contextLoads() {
     }
 
 }

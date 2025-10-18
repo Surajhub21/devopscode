@@ -39,10 +39,18 @@ public class DemoApplication {
                             border-radius: 10px;
                             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
                         }
+                        h3 {
+                            color: #333;
+                            background-color: #fff;
+                            padding: 20px 40px;
+                            border-radius: 10px;
+                            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                        }
                     </style>
                 </head>
                 <body>
                     <h1>Hello, World!</h1>
+                    <h3>This means your application deployed successfully
                                                           </body>
                                                           </html>
                                                           """;
