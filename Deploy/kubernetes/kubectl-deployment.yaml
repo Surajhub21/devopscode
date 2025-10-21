@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: my-node-app
+  labels:
+    app: from-yaml
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: node-app
+
+  template: #Information about the pods
+    metadata:
+      name: my-node-app-pod
+      labels:
+        app: node-app
+    spec:
+      containers:
+        - name: node-app
+          image: philippaul/node-demo-app:01
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      

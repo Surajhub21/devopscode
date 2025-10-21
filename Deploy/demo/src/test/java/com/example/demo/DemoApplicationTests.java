@@ -6,8 +6,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -18,49 +20,18 @@ class DemoApplicationTests {
     private MockMvc mockMvc;
 
     @Test
-    void homeShouldReturnDefaultMessage() throws Exception {
+    void rootShouldRedirectToIndex() throws Exception {
         this.mockMvc.perform(get("/"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("""
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Hello World</title>
-                    <style>
-                        body {
-                            font-family: Arial, sans-serif;
-                            background-color: #f4f4f4;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            height: 100vh;
-                            margin: 0;
-                        }
-                        h1 {
-                            color: #333;
-                            background-color: #fff;
-                            padding: 20px 40px;
-                            border-radius: 10px;
-                            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                        }
-                        h3 {
-                            color: #333;
-                            background-color: #fff;
-                            padding: 20px 40px;
-                            border-radius: 10px;
-                            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                        }
-                    </style>
-                </head>
-                <body>
-                    <h1>Hello, World!</h1>
-                    <h3>This means your application deployed successfully
-                                                          </body>
-                                                          </html>
-                                                          """));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/index.html"));
     }
 
+    @Test
+    void indexHtmlShouldContainNotesAppHeading() throws Exception {
+        this.mockMvc.perform(get("/index.html"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Notes App")));
+    }
 
     @Test
     void contextLoads() {

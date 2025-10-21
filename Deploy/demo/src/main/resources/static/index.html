@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Notes App</title>
+    <style>
+        :root{
+            --bg:#f7f9fc;
+            --card:#ffffff;
+            --accent:#5b8def;
+            --muted:#6b7280;
+            --shadow: 0 6px 18px rgba(43,52,69,0.08);
+        }
+        html,body{height:100%;margin:0;font-family:Inter,Roboto,Arial,sans-serif;background:var(--bg);color:#111}
+        .container{max-width:900px;margin:40px auto;padding:24px}
+        .card{background:var(--card);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
+        h1{margin:0 0 12px;font-size:22px;color:#102a43}
+        form{display:grid;grid-template-columns:1fr 300px;gap:12px;align-items:start}
+        label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+        input[type=text],textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef8;background:#fbfdff}
+        textarea{min-height:100px;resize:vertical}
+        .actions{display:flex;gap:8px;align-items:center}
+        button{background:var(--accent);color:white;padding:10px 14px;border-radius:8px;border:none;cursor:pointer}
+        button.secondary{background:#eef3ff;color:var(--accent);border:1px solid #dbeafe}
+        .notes-list{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+        .note{padding:12px;border-radius:8px;background:#fbfdff;border:1px solid #eef2ff}
+        .note h3{margin:0 0 6px;font-size:16px}
+        .note p{margin:0;color:var(--muted);font-size:14px}
+        .empty{color:var(--muted);padding:18px;text-align:center}
+        .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+        @media (max-width:720px){form{grid-template-columns:1fr} .top{flex-direction:column;align-items:flex-start;gap:8px}}
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="top">
+            <div>
+                <h1>Notes App</h1>
+                <div style="color:var(--muted);font-size:13px">Add notes below — they will be sent to the backend API and listed on the page.</div>
+            </div>
+            <div style="text-align:right;color:var(--muted);font-size:12px">Simple in-memory notes demo</div>
+        </div>
+
+        <form id="noteForm">
+            <div>
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" placeholder="Note title" required />
+                <label for="description" style="margin-top:10px">Description</label>
+                <textarea id="description" name="description" placeholder="Write something..." required></textarea>
+            </div>
+
+            <div class="actions">
+                <button type="submit">Add Note</button>
+                <button type="button" class="secondary" id="clearBtn">Clear</button>
+            </div>
+        </form>
+
+        <div id="notesContainer" class="notes-list" style="margin-top:20px"></div>
+        <div id="emptyState" class="empty" style="display:none">No notes yet — add one above.</div>
+    </div>
+</div>
+
+<script>
+    const apiBase = '/api/notes';
+
+    async function fetchNotes(){
+        try{
+            const res = await fetch(apiBase);
+            if(!res.ok) throw new Error('Failed to fetch');
+            const data = await res.json();
+            renderNotes(data || []);
+        }catch(e){
+            console.error(e);
+            document.getElementById('emptyState').textContent = 'Unable to load notes';
+            document.getElementById('emptyState').style.display = 'block';
+        }
+    }
+
+    function renderNotes(notes){
+        const container = document.getElementById('notesContainer');
+        container.innerHTML = '';
+        if(!notes || notes.length === 0){
+            document.getElementById('emptyState').style.display = 'block';
+            return;
+        }
+        document.getElementById('emptyState').style.display = 'none';
+        notes.forEach(n => {
+            const el = document.createElement('div');
+            el.className = 'note';
+            const title = document.createElement('h3');
+            title.textContent = n.title || 'Untitled';
+            const desc = document.createElement('p');
+            desc.textContent = n.description || '';
+            el.appendChild(title);
+            el.appendChild(desc);
+            container.appendChild(el);
+        });
+    }
+
+    document.getElementById('noteForm').addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        const title = document.getElementById('title').value.trim();
+        const description = document.getElementById('description').value.trim();
+        if(!title && !description) return;
+        try{
+            const res = await fetch(apiBase, {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({title, description})
+            });
+            if(!res.ok) throw new Error('Failed to add');
+            // clear form and refresh list
+            document.getElementById('title').value = '';
+            document.getElementById('description').value = '';
+            const created = await res.json();
+            // Optimistically append by refetching list to keep ordering consistent
+            await fetchNotes();
+        }catch(err){
+            console.error(err);
+            alert('Unable to add note');
+        }
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', ()=>{
+        document.getElementById('title').value = '';
+        document.getElementById('description').value = '';
+    });
+
+    // initial load
+    fetchNotes();
+</script>
+</body>
+</html>

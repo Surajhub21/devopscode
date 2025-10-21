@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: my-demo-db-app
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-db-app
+
+  template:
+    metadata:
+      labels:
+        app: demo-db-app
+    spec:
+      containers:
+        - name: my-demo-db-app
+          image: suraj7551/demo-app:04
+          imagePullPolicy: IfNotPresent
+        - name: test-mongo
+          image: mongo:latest
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      

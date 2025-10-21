@@ -1,13 +1,15 @@
 package com.example.demo;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 @SpringBootApplication
-@RestController
+@Controller
 public class DemoApplication {
 
     public static void main(String[] args) {
@@ -15,44 +17,26 @@ public class DemoApplication {
     }
 
     @GetMapping("/")
-    public String home(){
-        return """
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Hello World</title>
-                    <style>
-                        body {
-                            font-family: Arial, sans-serif;
-                            background-color: #f4f4f4;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            height: 100vh;
-                            margin: 0;
-                        }
-                        h1 {
-                            color: #333;
-                            background-color: #fff;
-                            padding: 20px 40px;
-                            border-radius: 10px;
-                            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                        }
-                        h3 {
-                            color: #333;
-                            background-color: #fff;
-                            padding: 20px 40px;
-                            border-radius: 10px;
-                            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                        }
-                    </style>
-                </head>
-                <body>
-                    <h1>Hello, World!</h1>
-                    <h3>This means your application deployed successfully
-                                                          </body>
-                                                          </html>
-                                                          """;
+    public RedirectView home() {
+        return new RedirectView("/index.html");
+    }
+
+    @Autowired
+    private ApplicationContext context;
+
+    @GetMapping("/exit")
+    public String shutdownApp() {
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(1000); // give response before shutting down
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            SpringApplication.exit(context ,() -> 0);
+        });
+        thread.setDaemon(false);
+        thread.start();
+
+        return "✅ Application shutting down...";
     }
 }

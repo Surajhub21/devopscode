@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: config-map-for-spring-mongo-pod
+
+data:
+  MONGO_HOST: "service-mongodb"
+  MONGO_PORT: "27017"
